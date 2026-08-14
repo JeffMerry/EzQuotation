@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ใบเสร็จรับเงิน</title>
+    <style>
+        /* 1. ล็อคขอบกระดาษ A4 */
+        @page {
+            size: A4;
+            margin: 15mm 15mm 0 15mm; 
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: 'Garuda', 'Sarabun', sans-serif;
+            color: #a05a45;
+            margin: 0;
+            padding: 0;
+            font-size: 13px;
+            position: relative;
+            height: 282mm; 
+        }
+
+        .title {
+            text-align: center;
+            font-size: 45px;
+            font-weight: bold;
+            color: #ce5a31;
+            margin-bottom: 25px;
+        }
+
+        /* ---- แถบวันที่ (เต็มความกว้างหน้ากระดาษ) ---- */
+        .date-box {
+            border-bottom: 1px solid #ce5a31;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #ce5a31;
+            font-weight: bold;
+            width: 100%; 
+        }
+
+        /* 2. จัดรูปแบบ Header (อยู่ใต้เส้นวันที่) */
+        .header-container {
+            display: table;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        .left-info, .issuer-info {
+            display: table-cell;
+            vertical-align: top;
+        }
+        .left-info {
+            display: table-cell;
+            width: 60%; 
+            padding-right: 20px;
+            text-align: left; /* ทำให้ชิดซ้าย */
+        }
+
+        /* คงตำแหน่งฝั่งขวาไว้ที่เดิม แต่ปรับขนาดให้เหมาะสม */
+        .issuer-info {
+            display: table-cell;
+            width: 40%;
+            text-align: left; /* เปลี่ยนจาก right เป็น left เพื่อให้เริ่มจากจุดเดียวกัน */
+            line-height: 1.6;
+            padding-left: 20px; /* เพิ่มระยะห่างจากฝั่งซ้ายเล็กน้อย */
+        }
+
+        .customer-name {
+            color: #ce5a31;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .customer-details { 
+            line-height: 1.8; 
+            white-space: pre-line;
+        }
+        
+        .issuer-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ce5a31;
+            margin-bottom: 5px;
+        }
+
+        /* 3. โครงสร้างตารางหลัก */
+        table.main-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ce5a31;
+            table-layout: fixed;
+        }
+        table.main-table th {
+            background-color: #ce5a31;
+            color: white;
+            padding: 12px 10px; 
+            text-align: center;
+            font-weight: bold;
+            border-left: 1px solid #ce5a31;
+        }
+        table.main-table th:first-child { border-left: none; }
+        
+        table.main-table td {
+            padding: 12px 10px;
+            border-left: 1px solid #ce5a31;
+            vertical-align: top;
+        }
+        table.main-table td:first-child { border-left: none; }
+        
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        
+        .item-desc {
+            text-align: left;
+            white-space: pre-line;
+            line-height: 1.5;
+            color: #000; 
+        }
+        .item-val {
+            color: #000; 
+            font-size: 14px;
+        }
+
+        .spacer-row td {
+            height: 90mm; 
+            border-bottom: 1px solid #ce5a31;
+        }
+
+        /* 4. ส่วนสรุปยอด */
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* ล็อคคอลัมน์ไม่ให้ยืดหยุ่นเอง */
+}
+.summary-table td {
+    padding: 8px 4px; /* ลด padding เพื่อให้ช่องแคบลง */
+    border: none;
+}
+.summary-label {
+    text-align: right; /* จัดชิดขวาเพื่อให้ติดกับตัวเลข */
+    color: #a05a45;
+    font-size: 13px;
+    width: 15%; /* ลดพื้นที่คอลัมน์ข้อความ */
+}
+.summary-value {
+    text-align: right;
+    border-left: 1px solid #ce5a31; /* เส้นกั้นซ้ายมือที่ต้องการให้ชิด */
+    padding-left: 15px; /* เพิ่มระยะห่างระหว่างเส้นกับตัวเลข */
+    color: #000;
+    font-size: 15px;
+    width: 15%; /* บีบความกว้างคอลัมน์ตัวเลขให้เล็กลง */
+}
+
+        /* 5. แถบตัวอักษรเงิน (แก้ไขความกว้างและแก้เอ๋อ) */
+        .bottom-text-label {
+            text-align: center; /* จัดให้อยู่กึ่งกลางตามแบบ */
+            padding: 12px 10px !important;
+            font-weight: bold;
+            color: #ce5a31;
+            border-top: 1px solid #ce5a31 !important;
+            border-bottom: 1px solid #ce5a31 !important;
+            white-space: nowrap;
+        }
+        .bottom-text-value {
+            background-color: #f5dfd3;
+            text-align: center;
+            padding: 12px 10px !important;
+            font-weight: bold;
+            color: #000;
+            border-top: 1px solid #ce5a31 !important;
+            border-bottom: 1px solid #ce5a31 !important;
+            border-left: 1px solid #ce5a31 !important;
+            border-right: 1px solid #ce5a31 !important; 
+        }
+        
+        .footer-bar {
+            position: absolute;
+            bottom: 0;
+            left: -15mm;
+            width: 210mm; 
+            height: 30px;
+            background-color: #ce5a31;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title">ใบเสร็จรับเงิน</div>
+
+    <div class="date-box">
+        วันที่: {{ date }}
+    </div>
+
+    <div class="header-container">
+        <div class="left-info">
+            <div class="customer-info">
+                <div class="customer-name">{{ customer_name }}</div>
+                <div class="customer-details">{{ customer_address }}        
+เลขประจำตัวผู้เสียภาษี : {{ customer_tax_id }}</div>
+            </div>
+        </div>
+
+        <div class="issuer-info">
+            <div class="issuer-title">ผู้เสนอราคา</div>
+            <div>ผู้ออกใบ: เขมภัสสร์ ดิษย์ธนกรกุล</div>
+            <div>เลขประจําตัวประชาชน 3100700851830</div>
+            <div>ที่อยู่: 110/31 ซ.กาญจนาภิเษก005 เขตบางแค</div>
+            <div>แขวงหลักสอง กรุงเทพมหานคร 10160</div>
+            <div>โทร: 0835391541</div>
+            <div>อีเมล: ekawachwork@gmail.com</div>
+        </div>
+    </div>
+
+    <table class="main-table">
+        <thead>
+            <tr>
+                <th style="width: 10%;">ลำดับ</th>
+                <th style="width: 45%;">รายการ</th>
+                <th style="width: 12%;">จำนวน</th>
+                <th style="width: 15%;">ราคา</th>
+                <th style="width: 18%;">ราคาสุทธิ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td class="text-center item-val">{{ loop.index }}.</td>
+                <td class="item-desc">{{ item.description }}</td>
+                <td class="text-center item-val">{{ item.quantity }}</td>
+                <td class="text-center item-val">{{ "{:,.2f}".format(item.unit_price).replace('.00', '') }}</td>
+                <td class="text-center item-val">{{ "{:,.2f}".format(item.quantity * item.unit_price).replace('.00', '') }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="spacer-row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+ <table class="summary-table">
+        <tr>
+            <td style="width: 10%;"></td>
+            <td style="width: 45%;"></td>
+            <td style="width: 12%;"></td>
+            <td class="summary-label" style="width: 15%;">จำนวนเงินรวมทั้งสิ้น</td>
+            <td class="summary-value" style="width: 18%;">{{ "{:,.2f}".format(subtotal).replace('.00', '') }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="summary-label">หักภาษี ณ ที่จ่าย</td>
+            <td class="summary-value">{% if vat is defined %}{{ "{:,.2f}".format(vat).replace('.00', '') }}{% else %}0{% endif %}</td> 
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="summary-label">ราคาสุทธิ</td>
+            <td class="summary-value">{{ "{:,.2f}".format(grand_total).replace('.00', '') }}</td>
+        </tr>
+    </table>
+
+    <table class="bottom-text-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <tr>
+            <td style="width: 67%; border: none;"></td>
+            <td class="bottom-text-label" style="width: 15%; border: 1px solid #ce5a31;">จำนวนเงินรวมทั้งสิ้น</td>
+            <td class="bottom-text-value" style="width: 18%; border: 1px solid #ce5a31; background-color: #f5dfd3; text-align: center; font-weight: bold; padding: 10px;">{{ bahttext }}</td>
+        </tr>
+    </table>
+
+    <div class="footer-bar"></div>
+
+</body>
+</html>
