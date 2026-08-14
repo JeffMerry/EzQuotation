@@ -56,16 +56,15 @@
             display: table-cell;
             width: 60%; 
             padding-right: 20px;
-            text-align: left; /* ทำให้ชิดซ้าย */
+            text-align: left;
         }
 
-        /* คงตำแหน่งฝั่งขวาไว้ที่เดิม แต่ปรับขนาดให้เหมาะสม */
         .issuer-info {
             display: table-cell;
             width: 40%;
-            text-align: left; /* เปลี่ยนจาก right เป็น left เพื่อให้เริ่มจากจุดเดียวกัน */
+            text-align: left;
             line-height: 1.6;
-            padding-left: 20px; /* เพิ่มระยะห่างจากฝั่งซ้ายเล็กน้อย */
+            padding-left: 20px;
         }
 
         .customer-name {
@@ -131,37 +130,37 @@
         }
 
         /* 4. ส่วนสรุปยอด */
-.summary-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed; /* ล็อคคอลัมน์ไม่ให้ยืดหยุ่นเอง */
-    page-break-inside: avoid;
-}
-.summary-table td {
-    padding: 8px 4px; /* ลด padding เพื่อให้ช่องแคบลง */
-    border: none;
-}
-.summary-label {
-    text-align: right; /* จัดชิดขวาเพื่อให้ติดกับตัวเลข */
-    color: #a05a45;
-    font-size: 13px;
-    width: 15%; /* ลดพื้นที่คอลัมน์ข้อความ */
-}
-.summary-value {
-    text-align: right;
-    border-left: 1px solid #ce5a31; /* เส้นกั้นซ้ายมือที่ต้องการให้ชิด */
-    padding-left: 15px; /* เพิ่มระยะห่างระหว่างเส้นกับตัวเลข */
-    color: #000;
-    font-size: 15px;
-    width: 15%; /* บีบความกว้างคอลัมน์ตัวเลขให้เล็กลง */
-}
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            page-break-inside: avoid;
+        }
+        .summary-table td {
+            padding: 8px 4px;
+            border: none;
+        }
+        .summary-label {
+            text-align: right;
+            color: #a05a45;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        .summary-value {
+            text-align: right;
+            border-left: 1px solid #ce5a31;
+            padding-left: 15px;
+            color: #000;
+            font-size: 15px;
+            white-space: nowrap;
+        }
 
-        /* 5. แถบตัวอักษรเงิน (แก้ไขความกว้างและแก้เอ๋อ) */
+        /* 5. แถบตัวอักษรเงิน */
         .bottom-text-table {
             page-break-inside: avoid;
         }
         .bottom-text-label {
-            text-align: center; /* จัดให้อยู่กึ่งกลางตามแบบ */
+            text-align: center;
             padding: 12px 10px !important;
             font-weight: bold;
             color: #ce5a31;
@@ -179,6 +178,7 @@
             border-bottom: 1px solid #ce5a31 !important;
             border-left: 1px solid #ce5a31 !important;
             border-right: 1px solid #ce5a31 !important; 
+            white-space: nowrap;
         }
         
         .footer-bar {
@@ -249,24 +249,18 @@
         </tbody>
     </table>
 
- <table class="summary-table">
+    <table class="summary-table">
         <tr>
-            <td style="width: 10%;"></td>
-            <td style="width: 45%;"></td>
-            <td style="width: 12%;"></td>
-            <td class="summary-label" style="width: 15%;">จำนวนเงินรวมทั้งสิ้น</td>
-            <td class="summary-value" style="width: 18%;">{{ "{:,.2f}".format(subtotal).replace('.00', '') }}</td>
+            <td style="width: 50%;"></td>
+            <td class="summary-label" style="width: 25%;">จำนวนเงินรวมทั้งสิ้น</td>
+            <td class="summary-value" style="width: 25%;">{{ "{:,.2f}".format(subtotal).replace('.00', '') }}</td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
             <td></td>
             <td class="summary-label">หักภาษี ณ ที่จ่าย</td>
             <td class="summary-value">{% if vat is defined %}{{ "{:,.2f}".format(vat).replace('.00', '') }}{% else %}0{% endif %}</td> 
         </tr>
         <tr>
-            <td></td>
-            <td></td>
             <td></td>
             <td class="summary-label">ราคาสุทธิ</td>
             <td class="summary-value">{{ "{:,.2f}".format(grand_total).replace('.00', '') }}</td>
@@ -275,9 +269,9 @@
 
     <table class="bottom-text-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
         <tr>
-            <td style="width: 67%; border: none;"></td>
-            <td class="bottom-text-label" style="width: 15%; border: 1px solid #ce5a31;">จำนวนเงินรวมทั้งสิ้น</td>
-            <td class="bottom-text-value" style="width: 18%; border: 1px solid #ce5a31; background-color: #f5dfd3; text-align: center; font-weight: bold; padding: 10px;">{{ bahttext }}</td>
+            <td style="width: 40%; border: none;"></td>
+            <td class="bottom-text-label" style="width: 20%; border: 1px solid #ce5a31;">จำนวนเงินรวมทั้งสิ้น</td>
+            <td class="bottom-text-value" style="width: 40%; border: 1px solid #ce5a31; background-color: #f5dfd3; text-align: center; font-weight: bold; padding: 10px;">{{ bahttext }}</td>
         </tr>
     </table>
 
