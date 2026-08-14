@@ -21,7 +21,7 @@
             padding: 0;
             font-size: 13px;
             position: relative;
-            height: 282mm; 
+            height: 265mm; 
         }
 
         .title {
@@ -126,7 +126,7 @@
         }
 
         .spacer-row td {
-            height: 90mm; 
+            height: 45mm; 
             border-bottom: 1px solid #ce5a31;
         }
 
@@ -135,6 +135,7 @@
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed; /* ล็อคคอลัมน์ไม่ให้ยืดหยุ่นเอง */
+    page-break-inside: avoid;
 }
 .summary-table td {
     padding: 8px 4px; /* ลด padding เพื่อให้ช่องแคบลง */
@@ -156,6 +157,9 @@
 }
 
         /* 5. แถบตัวอักษรเงิน (แก้ไขความกว้างและแก้เอ๋อ) */
+        .bottom-text-table {
+            page-break-inside: avoid;
+        }
         .bottom-text-label {
             text-align: center; /* จัดให้อยู่กึ่งกลางตามแบบ */
             padding: 12px 10px !important;
