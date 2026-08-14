@@ -193,7 +193,7 @@
 </head>
 <body>
 
-    <div class="title">ใบเสร็จรับเงิน</div>
+    <div class="title">{{ document_title }}</div>
 
     <div class="date-box">
         วันที่: {{ date }}
@@ -209,13 +209,12 @@
         </div>
 
         <div class="issuer-info">
-            <div class="issuer-title">ผู้เสนอราคา</div>
-            <div>ผู้ออกใบ: เขมภัสสร์ ดิษย์ธนกรกุล</div>
-            <div>เลขประจําตัวประชาชน 3100700851830</div>
-            <div>ที่อยู่: 110/31 ซ.กาญจนาภิเษก005 เขตบางแค</div>
-            <div>แขวงหลักสอง กรุงเทพมหานคร 10160</div>
-            <div>โทร: 0835391541</div>
-            <div>อีเมล: ekawachwork@gmail.com</div>
+            <div class="issuer-title">{{ issuer_title }}</div>
+            {% if issuer_name %}<div>ผู้ออกใบ: {{ issuer_name }}</div>{% endif %}
+            {% if issuer_tax_id %}<div>เลขประจําตัวประชาชน: {{ issuer_tax_id }}</div>{% endif %}
+            {% if issuer_address %}<div style="white-space: pre-line;">ที่อยู่: {{ issuer_address }}</div>{% endif %}
+            {% if issuer_phone %}<div>โทร: {{ issuer_phone }}</div>{% endif %}
+            {% if issuer_email %}<div>อีเมล: {{ issuer_email }}</div>{% endif %}
         </div>
     </div>
 

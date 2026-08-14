@@ -37,6 +37,12 @@ class QuotationData(BaseModel):
     valid_until: Optional[str] = None
     document_title: Optional[str] = "ใบเสนอราคา"
     items: List[Item]
+    issuer_title: Optional[str] = "ผู้เสนอราคา"
+    issuer_name: Optional[str] = "เขมภัสสร์ ดิษย์ธนกรกุล"
+    issuer_tax_id: Optional[str] = "3100700851830"
+    issuer_address: Optional[str] = "110/31 ซ.กาญจนาภิเษก005 เขตบางแค\nแขวงหลักสอง กรุงเทพมหานคร 10160"
+    issuer_phone: Optional[str] = "0835391541"
+    issuer_email: Optional[str] = "ekawachwork@gmail.com"
 
 @app.post("/api/generate-pdf")
 async def generate_pdf(data: QuotationData):
@@ -75,6 +81,12 @@ async def generate_pdf(data: QuotationData):
         customer_name=data.customer_name,
         customer_address=data.customer_address,
         customer_tax_id=data.customer_tax_id,  
+        issuer_title=data.issuer_title if data.issuer_title is not None else "ผู้เสนอราคา",
+        issuer_name=data.issuer_name if data.issuer_name is not None else "",
+        issuer_tax_id=data.issuer_tax_id if data.issuer_tax_id is not None else "",
+        issuer_address=data.issuer_address if data.issuer_address is not None else "",
+        issuer_phone=data.issuer_phone if data.issuer_phone is not None else "",
+        issuer_email=data.issuer_email if data.issuer_email is not None else "",
         items=data.items,
         subtotal=subtotal,
         vat=vat,

@@ -56,7 +56,7 @@ export default function RootLayout({
         {/* Footer ส่วนท้ายของหน้าเว็บ */}
         <footer className="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
           <div className="max-w-5xl mx-auto px-4">
-            &copy; {new Date().getFullYear()} EzQuotation App - พัฒนาด้วย Next.js & FastAPI
+            &copy; {new Date().getFullYear()} EzQuotation App
           </div>
         </footer>
 
